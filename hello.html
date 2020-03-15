@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<style>
+	[v-cloak] {
+		display: none;
+	}
+</style>
+
+<div id="app">
+	<div class="container">
+		<div class="card mt-5">
+			<h2 class="card-header">Students</h2>
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">First</th>
+						<th scope="col">Last</th>
+						<th scope="col">Marks</th>
+						<th scope="col">Remove</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="(s,index) in students">
+						<th scope="row">{{index+1}}</th>
+						<td>{{s.firstName}}</td>
+						<td>{{s.lastName}}</td>
+						<td>{{s.marks}}</td>
+						<td><button @click="remove(index)" class="btn btn-danger">Delete</button></td>
+					</tr>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+
+	var vm = new Vue({
+		el: '#app',
+		data: {
+			students: []
+		},
+		created: function () {
+			this.fetchApi();
+		},
+		methods: {
+			fetchApi: function () {
+				var url = 'http://localhost:8080/api/students';
+				axios.get(url)
+					.then(function (res) {
+						vm.students = res.data.slice(0, 10);
+					})
+			},
+			remove: function (index) {
+				this.students.splice(index, 1);
+			}
+		}
+
+	});
+
+</script>
